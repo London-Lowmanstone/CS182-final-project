@@ -188,7 +188,9 @@ def get_mixture_coef(output):
   out_sigma = tf.placeholder(dtype=tf.float32, shape=[None,KMIX], name="mixparam")
   out_mu = tf.placeholder(dtype=tf.float32, shape=[None,KMIX], name="mixparam")
 
-  out_pi, out_sigma, out_mu = tf.split(1, 3, output)
+  # needed arguments to be flipped here
+  # https://stackoverflow.com/a/41842564 https://github.com/tensorflow/tensorflow/blob/64edd34ce69b4a8033af5d217cb8894105297d8a/RELEASE.md
+  out_pi, out_sigma, out_mu = tf.split(output, 3, 1)
 
   max_pi = tf.reduce_max(out_pi, 1, keep_dims=True)
   out_pi = tf.sub(out_pi, max_pi)
