@@ -325,5 +325,3 @@ y_test = generate_ensemble(out_pi_test, out_mu_test, out_sigma_test)
 plt.figure(figsize=(8, 8))
 plt.plot(x_data,y_data,'ro', x_test,y_test,'bo',alpha=0.3)
 plt.show()
-
-# this actually works - yay!
