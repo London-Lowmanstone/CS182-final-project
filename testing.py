@@ -236,14 +236,14 @@ plt.show()
 
 oneDivSqrtTwoPI = 1 / math.sqrt(2*math.pi) # normalisation factor for gaussian, not needed.
 def tf_normal(y, mu, sigma):
-  result = tf.sub(y, mu)
-  result = tf.mul(result,tf.inv(sigma))
+  result = tf.subtract(y, mu)
+  result = tf.multiply(result,tf.reciprocal(sigma))
   result = -tf.square(result)/2
-  return tf.mul(tf.exp(result),tf.inv(sigma))*oneDivSqrtTwoPI
+  return tf.multiply(tf.exp(result),tf.inv(sigma))*oneDivSqrtTwoPI
 
 def get_lossfunc(out_pi, out_sigma, out_mu, y):
   result = tf_normal(y, out_mu, out_sigma)
-  result = tf.mul(result, out_pi)
+  result = tf.multiply(result, out_pi)
   result = tf.reduce_sum(result, 1, keep_dims=True)
   result = -tf.log(result)
   return tf.reduce_mean(result)
