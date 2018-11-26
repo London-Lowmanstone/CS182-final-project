@@ -198,8 +198,10 @@ def get_mixture_coef(output):
 
   out_pi = tf.exp(out_pi)
 
-  normalize_pi = tf.inv(tf.reduce_sum(out_pi, 1, keep_dims=True))
-  out_pi = tf.mul(normalize_pi, out_pi)
+  # tf.reciprocal not tf.inv
+  normalize_pi = tf.reciprocal(tf.reduce_sum(out_pi, 1, keep_dims=True))
+  # tf.multiply not tf.mul
+  out_pi = tf.multiply(normalize_pi, out_pi)
 
   out_sigma = tf.exp(out_sigma)
 
