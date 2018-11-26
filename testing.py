@@ -193,7 +193,8 @@ def get_mixture_coef(output):
   out_pi, out_sigma, out_mu = tf.split(output, 3, 1)
 
   max_pi = tf.reduce_max(out_pi, 1, keep_dims=True)
-  out_pi = tf.sub(out_pi, max_pi)
+  # tf.subtract not tf.sub
+  out_pi = tf.subtract(out_pi, max_pi)
 
   out_pi = tf.exp(out_pi)
 
