@@ -239,7 +239,7 @@ def tf_normal(y, mu, sigma):
   result = tf.subtract(y, mu)
   result = tf.multiply(result,tf.reciprocal(sigma))
   result = -tf.square(result)/2
-  return tf.multiply(tf.exp(result),tf.inv(sigma))*oneDivSqrtTwoPI
+  return tf.multiply(tf.exp(result),tf.reciprocal(sigma))*oneDivSqrtTwoPI
 
 def get_lossfunc(out_pi, out_sigma, out_mu, y):
   result = tf_normal(y, out_mu, out_sigma)
@@ -325,3 +325,5 @@ y_test = generate_ensemble(out_pi_test, out_mu_test, out_sigma_test)
 plt.figure(figsize=(8, 8))
 plt.plot(x_data,y_data,'ro', x_test,y_test,'bo',alpha=0.3)
 plt.show()
+
+# this actually works - yay!
