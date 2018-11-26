@@ -77,7 +77,7 @@ train_op = tf.train.RMSPropOptimizer(learning_rate=0.1, decay=0.8).minimize(loss
 
 
 sess = tf.InteractiveSession()
-sess.run(tf.initialize_all_variables())
+sess.run(tf.global_variables_initializer())
 
 
 # We will run gradient descent for 1000 times to minimise the loss function with the data fed in via a dictionary. As the dataset is not large, we won’t use mini batches. After the below is run, the weight and bias parameters will be auto stored in their respective tf.Variable objects.
@@ -124,7 +124,7 @@ plt.show()
 
 
 sess = tf.InteractiveSession()
-sess.run(tf.initialize_all_variables())
+sess.run(tf.global_variables_initializer())
 
 for i in range(NEPOCH):
   sess.run(train_op,feed_dict={x: x_data, y: y_data})
@@ -192,14 +192,14 @@ def get_mixture_coef(output):
   # https://stackoverflow.com/a/41842564 https://github.com/tensorflow/tensorflow/blob/64edd34ce69b4a8033af5d217cb8894105297d8a/RELEASE.md
   out_pi, out_sigma, out_mu = tf.split(output, 3, 1)
 
-  max_pi = tf.reduce_max(out_pi, 1, keep_dims=True)
+  max_pi = tf.reduce_max(out_pi, 1, keepdims=True)
   # tf.subtract not tf.sub
   out_pi = tf.subtract(out_pi, max_pi)
 
   out_pi = tf.exp(out_pi)
 
   # tf.reciprocal not tf.inv
-  normalize_pi = tf.reciprocal(tf.reduce_sum(out_pi, 1, keep_dims=True))
+  normalize_pi = tf.reciprocal(tf.reduce_sum(out_pi, 1, keepdims=True))
   # tf.multiply not tf.mul
   out_pi = tf.multiply(normalize_pi, out_pi)
 
@@ -244,7 +244,7 @@ def tf_normal(y, mu, sigma):
 def get_lossfunc(out_pi, out_sigma, out_mu, y):
   result = tf_normal(y, out_mu, out_sigma)
   result = tf.multiply(result, out_pi)
-  result = tf.reduce_sum(result, 1, keep_dims=True)
+  result = tf.reduce_sum(result, 1, keepdims=True)
   result = -tf.log(result)
   return tf.reduce_mean(result)
 
@@ -257,7 +257,7 @@ train_op = tf.train.AdamOptimizer().minimize(lossfunc)
 
 
 sess = tf.InteractiveSession()
-sess.run(tf.initialize_all_variables())
+sess.run(tf.global_variables_initializer())
 
 NEPOCH = 10000
 loss = np.zeros(NEPOCH) # store the training progress here.
