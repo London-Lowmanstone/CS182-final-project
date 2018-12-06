@@ -36,11 +36,12 @@ X = numpy.reshape(dataX, (n_patterns, seq_length, 1))
 X = X / float(n_vocab)
 # one hot encode the output variable
 y = np_utils.to_categorical(dataY)
+nodes = 100
 # define the LSTM model
 model = Sequential()
-model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+model.add(LSTM(nodes, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
 model.add(Dropout(0.2))
-model.add(LSTM(256))
+model.add(LSTM(nodes))
 model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam')

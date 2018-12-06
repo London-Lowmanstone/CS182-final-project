@@ -9,7 +9,8 @@ from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
 
 test_filename = "tiny_dataset.txt"
-weights_filename = "weights-improvement-04-2.8487-bigger.hdf5"
+weights_filename = "weights-improvement-39-1.0780-bigger.hdf5"
+# also should change seq_length and nodes below to match the training
 
 # load ascii text and covert to lowercase
 filename = test_filename
@@ -41,11 +42,12 @@ X = numpy.reshape(dataX, (n_patterns, seq_length, 1))
 X = X / float(n_vocab)
 # one hot encode the output variable
 y = np_utils.to_categorical(dataY)
+nodes = 100
 # define the LSTM model
 model = Sequential()
-model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
+model.add(LSTM(nodes, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
 model.add(Dropout(0.2))
-model.add(LSTM(256))
+model.add(LSTM(nodes))
 model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation='softmax'))
 # load the network weights
