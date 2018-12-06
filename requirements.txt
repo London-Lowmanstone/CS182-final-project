@@ -40,3 +40,6 @@ Author-email: None
 License: MIT
 Location: /home/main-cs/.local/lib/python3.6/site-packages
 Requires: numpy, h5py
+
+Installing collected packages: six, grpcio, numpy, markdown, protobuf, werkzeug, tensorboard, keras-preprocessing, h5py, keras-applications, gast, astor, termcolor, absl-py, tensorflow
+Successfully installed absl-py-0.6.1 astor-0.7.1 gast-0.2.0 grpcio-1.17.0 h5py-2.8.0 keras-applications-1.0.6 keras-preprocessing-1.0.5 markdown-3.0.1 numpy-1.15.4 protobuf-3.6.1 six-1.11.0 tensorboard-1.12.0 tensorflow-1.12.0 termcolor-1.1.0 werkzeug-0.14.1
