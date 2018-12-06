@@ -46,8 +46,8 @@ nodes = 100
 # define the LSTM model
 model = Sequential()
 model.add(LSTM(nodes, input_shape=(X.shape[1], X.shape[2]), return_sequences=True))
-model.add(Dropout(0.2))
-model.add(LSTM(nodes))
+# model.add(Dropout(0.2))
+# model.add(LSTM(nodes))
 model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation='softmax'))
 # load the network weights
