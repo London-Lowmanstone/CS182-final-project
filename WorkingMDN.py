@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # from http://blog.otoro.net/2015/11/24/mixture-density-networks-with-tensorflow/
 
 # Update: PyTorch Implementation of the same notebook available here.
