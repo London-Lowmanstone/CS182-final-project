@@ -1,0 +1,42 @@
+All the requirements for tensorflow
+I used `pip show` in order to get all of the dependencies
+
+Name: tensorflow
+Version: 1.12.0
+Summary: TensorFlow is an open source machine learning framework for everyone.
+Home-page: https://www.tensorflow.org/
+Author: Google Inc.
+Author-email: opensource@google.com
+License: Apache 2.0
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: termcolor, keras-preprocessing, absl-py, grpcio, protobuf, tensorboard, gast, numpy, keras-applications, astor, wheel, six
+
+Name: protobuf
+Version: 3.6.1
+Summary: Protocol Buffers
+Home-page: https://developers.google.com/protocol-buffers/
+Author: None
+Author-email: None
+License: 3-Clause BSD License
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: six, setuptools
+
+Name: tensorboard
+Version: 1.12.0
+Summary: TensorBoard lets you watch Tensors Flow
+Home-page: https://github.com/tensorflow/tensorboard
+Author: Google Inc.
+Author-email: opensource@google.com
+License: Apache 2.0
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: numpy, protobuf, six, wheel, grpcio, werkzeug, markdown
+
+Name: Keras-Applications
+Version: 1.0.6
+Summary: Reference implementations of popular deep learning models
+Home-page: https://github.com/keras-team/keras-applications
+Author: Keras Team
+Author-email: None
+License: MIT
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: numpy, h5py
