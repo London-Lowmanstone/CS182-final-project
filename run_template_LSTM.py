@@ -9,7 +9,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
 
 test_filename = "tiny_dataset.txt"
-weights_filename = "weights-improvement-49-2.7553-bigger.hdf5"
+weights_filename = "weights-improvement-04-2.8487-bigger.hdf5"
 
 # load ascii text and covert to lowercase
 filename = test_filename
