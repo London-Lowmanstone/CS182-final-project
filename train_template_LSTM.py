@@ -1,3 +1,4 @@
+# from https://machinelearningmastery.com/text-generation-lstm-recurrent-neural-networks-python-keras/
 # Larger LSTM Network to Generate Text for Alice in Wonderland
 import numpy
 from keras.models import Sequential
@@ -7,7 +8,7 @@ from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
 # load ascii text and covert to lowercase - changed to my file name
-filename = "alice_dataset.txt"
+filename = "tiny_dataset.txt"
 raw_text = open(filename).read()
 raw_text = raw_text.lower()
 # create mapping of unique chars to integers
@@ -19,7 +20,7 @@ n_vocab = len(chars)
 print("Total Characters: ", n_chars)
 print("Total Vocab: ", n_vocab)
 # prepare the dataset of input to output pairs encoded as integers
-seq_length = 100
+seq_length = 10
 dataX = []
 dataY = []
 for i in range(0, n_chars - seq_length, 1):
