@@ -1,0 +1,45 @@
+All the requirements for tensorflow
+I used `pip show` in order to get all of the dependencies
+
+Name: tensorflow
+Version: 1.12.0
+Summary: TensorFlow is an open source machine learning framework for everyone.
+Home-page: https://www.tensorflow.org/
+Author: Google Inc.
+Author-email: opensource@google.com
+License: Apache 2.0
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: termcolor, keras-preprocessing, absl-py, grpcio, protobuf, tensorboard, gast, numpy, keras-applications, astor, wheel, six
+
+Name: protobuf
+Version: 3.6.1
+Summary: Protocol Buffers
+Home-page: https://developers.google.com/protocol-buffers/
+Author: None
+Author-email: None
+License: 3-Clause BSD License
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: six, setuptools
+
+Name: tensorboard
+Version: 1.12.0
+Summary: TensorBoard lets you watch Tensors Flow
+Home-page: https://github.com/tensorflow/tensorboard
+Author: Google Inc.
+Author-email: opensource@google.com
+License: Apache 2.0
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: numpy, protobuf, six, wheel, grpcio, werkzeug, markdown
+
+Name: Keras-Applications
+Version: 1.0.6
+Summary: Reference implementations of popular deep learning models
+Home-page: https://github.com/keras-team/keras-applications
+Author: Keras Team
+Author-email: None
+License: MIT
+Location: /home/main-cs/.local/lib/python3.6/site-packages
+Requires: numpy, h5py
+
+Installing collected packages: six, grpcio, numpy, markdown, protobuf, werkzeug, tensorboard, keras-preprocessing, h5py, keras-applications, gast, astor, termcolor, absl-py, tensorflow
+Successfully installed absl-py-0.6.1 astor-0.7.1 gast-0.2.0 grpcio-1.17.0 h5py-2.8.0 keras-applications-1.0.6 keras-preprocessing-1.0.5 markdown-3.0.1 numpy-1.15.4 protobuf-3.6.1 six-1.11.0 tensorboard-1.12.0 tensorflow-1.12.0 termcolor-1.1.0 werkzeug-0.14.1
