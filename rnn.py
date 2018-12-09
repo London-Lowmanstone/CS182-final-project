@@ -173,7 +173,7 @@ def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt")
 
     # Generate LEN_TEST_TEXT words using the trained network
     if generate_song:
-        print("Generating song...")
+        print("Generating tweet...")
         saver.restore(sess, ckpt_file)
 
         TEST_PREFIX = " "
