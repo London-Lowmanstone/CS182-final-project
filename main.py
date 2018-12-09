@@ -1,7 +1,8 @@
 import rnn
 
 # def main(train_model, generate_song, data_file, ckpt_file):
-training_name = "rep_tweets"
+training_name = "dem_tweets"
+
 data_folder = "data"
 models_folder = "models"
 new_tweets_folder = "tweets"

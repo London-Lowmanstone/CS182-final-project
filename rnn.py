@@ -192,4 +192,4 @@ def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt")
                 word_count += 1
         song.write(gen_str)
         song.close()
-        print("Song saved at {}".format(song_file))
+        print("Tweet saved at {}".format(song_file))
