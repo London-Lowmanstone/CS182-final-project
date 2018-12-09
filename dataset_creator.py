@@ -1,7 +1,7 @@
 import csv
-with open("dem_tweets.csv", "w+") as dem_save_file:
-    with open("rep_tweets.csv", "w+") as rep_save_file:
-        with open('tweets.csv', newline='') as csv_file:
+with open("data/dem_tweets.txt", "w+") as dem_save_file:
+    with open("data/rep_tweets.txt", "w+") as rep_save_file:
+        with open('data/tweets.csv', newline='') as csv_file:
             spamreader = csv.reader(csv_file, delimiter=',')
             for row_index, row in enumerate(spamreader):
                 print(row_index)
