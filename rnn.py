@@ -128,7 +128,7 @@ def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt")
     batch_size = 64
     time_steps = 100
 
-    ITERATION_COUNT = 100  # Number of training iterations # Cass had this set to 20000
+    ITERATION_COUNT = 20000  # Number of training iterations # Cass had this set to 20000
     LEN_TEST_TEXT = 200  # Number of words of text to generate after training the network
 
     # Initialize the network
