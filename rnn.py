@@ -1,5 +1,6 @@
 """
 Text generation using a Recurrent Neural Network (LSTM).
+Based on https://github.com/cassandrakane/Lyricized
 Based on https://github.com/spiglerg/RNN_Text_Generation_Tensorflow
 """
 import tensorflow as tf
