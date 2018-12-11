@@ -1,5 +1,6 @@
 """
 Text generation using a Recurrent Neural Network (LSTM).
+Based on https://github.com/cassandrakane/Lyricized
 Based on https://github.com/spiglerg/RNN_Text_Generation_Tensorflow
 """
 import tensorflow as tf
@@ -108,8 +109,8 @@ def decode_embed(array, vocab):
     return vocab[array.index(1)]
 
 
-def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt"):
-    """Train model/Generate song"""
+def main(train_model, generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
+    """Train model/Generate tweet"""
 
     # Load the data
     data_ = ""
@@ -172,7 +173,7 @@ def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt")
         saver.save(sess, ckpt_file)
 
     # Generate LEN_TEST_TEXT words using the trained network
-    if generate_song:
+    if generate_tweet:
         print("Generating tweet...")
         saver.restore(sess, ckpt_file)
 
@@ -182,7 +183,7 @@ def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt")
 
         gen_str = TEST_PREFIX
         word_count = 0
-        song = open(song_file, "w+")
+        tweet = open(tweet_file, "w+")
         while word_count < LEN_TEST_TEXT:
             # Sample character from the network according to the generated output probabilities
             element = np.random.choice(range(len(vocab)), p=out)
@@ -190,6 +191,6 @@ def main(train_model, generate_song, data_file, ckpt_file, song_file="song.txt")
             out = net.run_step(embed_to_vocab(vocab[element], vocab), False)
             if vocab[element] == " ":
                 word_count += 1
-        song.write(gen_str)
-        song.close()
-        print("Tweet saved at {}".format(song_file))
+        tweet.write(gen_str)
+        tweet.close()
+        print("Tweet saved at {}".format(tweet_file))
