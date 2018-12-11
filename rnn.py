@@ -129,7 +129,7 @@ def main(train_model, generate_tweet, data_file, ckpt_file, tweet_file="tweet.tx
     batch_size = 64
     time_steps = 100
 
-    ITERATION_COUNT = 20000  # Number of training iterations # Cass had this set to 20000
+    ITERATION_COUNT = 20000  # Number of training iterations
     LEN_TEST_TEXT = 200  # Number of words of text to generate after training the network
 
     # Initialize the network
