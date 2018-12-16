@@ -109,10 +109,8 @@ def decode_embed(array, vocab):
     return vocab[array.index(1)]
 
 
-def main(should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
+def main(iterations, should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt", tweet_length=500):
     """Train model/Generate tweet"""
-    ITERATION_COUNT = 1  # Number of training iterations
-    LEN_TEST_TEXT = 200  # Number of words of text to generate after training the network
     SAVE_COUNT = 100 # Number of iterations before each save
 
     # Hyperparameters for training
@@ -128,8 +126,8 @@ def main(should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
     batch_y = np.zeros((batch_size, time_steps, in_size))
 
     possible_batch_ids = range(data.shape[0] - time_steps - 1)
-    for i in range(ITERATION_COUNT):
-        print("Starting iteration {} / {}".format(i + 1, ITERATION_COUNT))
+    for i in range(iterations):
+        print("Starting iteration {} / {}".format(i + 1, iterations))
         # Sample time_steps consecutive samples from the dataset text file
         batch_id = random.sample(possible_batch_ids, batch_size)
 
@@ -143,15 +141,17 @@ def main(should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
         cst = net.train_batch(batch, batch_y)
         if i % SAVE_COUNT == 0:
             saver.save(sess, ckpt_file)
+    saver.save(sess, ckpt_file)
 
     if should_generate_tweet:
-        generate_tweet_from_training(LEN_TEST_TEXT, vocab, sess, net, saver, ckpt_file, tweet_file)
+        generate_tweet_from_training(tweet_length, vocab, sess, net, saver, ckpt_file, tweet_file)
 
 def setup(data_file, ckpt_file):
     '''
     Takes a data file and a ckpt file and returns:
     vocab, sess, net, saver, data, hyperparameters
     '''
+    # TODO figure out how to restore from ckpt file
     # Load the data
     data_ = ""
     with open(data_file, 'r') as f:
