@@ -109,7 +109,7 @@ def decode_embed(array, vocab):
     return vocab[array.index(1)]
 
 
-def main(train_model, should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
+def main(should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
     """Train model/Generate tweet"""
     ITERATION_COUNT = 1  # Number of training iterations
     LEN_TEST_TEXT = 200  # Number of words of text to generate after training the network
@@ -122,31 +122,30 @@ def main(train_model, should_generate_tweet, data_file, ckpt_file, tweet_file="t
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
     # Train the network
-    if train_model:
-        last_time = time.time()
+    last_time = time.time()
 
-        batch = np.zeros((batch_size, time_steps, in_size))
-        batch_y = np.zeros((batch_size, time_steps, in_size))
+    batch = np.zeros((batch_size, time_steps, in_size))
+    batch_y = np.zeros((batch_size, time_steps, in_size))
 
-        possible_batch_ids = range(data.shape[0] - time_steps - 1)
-        for i in range(ITERATION_COUNT):
-            print("Starting iteration {} / {}".format(i + 1, ITERATION_COUNT))
-            # Sample time_steps consecutive samples from the dataset text file
-            batch_id = random.sample(possible_batch_ids, batch_size)
+    possible_batch_ids = range(data.shape[0] - time_steps - 1)
+    for i in range(ITERATION_COUNT):
+        print("Starting iteration {} / {}".format(i + 1, ITERATION_COUNT))
+        # Sample time_steps consecutive samples from the dataset text file
+        batch_id = random.sample(possible_batch_ids, batch_size)
 
-            for j in range(time_steps):
-                ind1 = [k + j for k in batch_id]
-                ind2 = [k + j + 1 for k in batch_id]
+        for j in range(time_steps):
+            ind1 = [k + j for k in batch_id]
+            ind2 = [k + j + 1 for k in batch_id]
 
-                batch[:, j, :] = data[ind1, :]
-                batch_y[:, j, :] = data[ind2, :]
+            batch[:, j, :] = data[ind1, :]
+            batch_y[:, j, :] = data[ind2, :]
 
-            cst = net.train_batch(batch, batch_y)
-            if i % SAVE_COUNT == 0:
-                saver.save(sess, ckpt_file)
+        cst = net.train_batch(batch, batch_y)
+        if i % SAVE_COUNT == 0:
+            saver.save(sess, ckpt_file)
 
-        if should_generate_tweet:
-            generate_tweet_from_training(LEN_TEST_TEXT, vocab, sess, net, saver, ckpt_file, tweet_file)
+    if should_generate_tweet:
+        generate_tweet_from_training(LEN_TEST_TEXT, vocab, sess, net, saver, ckpt_file, tweet_file)
 
 def setup(data_file, ckpt_file):
     '''
