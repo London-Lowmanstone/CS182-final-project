@@ -131,6 +131,7 @@ def main(train_model, generate_tweet, data_file, ckpt_file, tweet_file="tweet.tx
 
     ITERATION_COUNT = 20000  # Number of training iterations
     LEN_TEST_TEXT = 200  # Number of words of text to generate after training the network
+    SAVE_COUNT = 100 # Number of iterations before each save
 
     # Initialize the network
     config = tf.ConfigProto()
@@ -169,9 +170,13 @@ def main(train_model, generate_tweet, data_file, ckpt_file, tweet_file="tweet.tx
                 batch_y[:, j, :] = data[ind2, :]
 
             cst = net.train_batch(batch, batch_y)
+            if i % SAVE_COUNT == 0:
+                saver.save(sess, ckpt_file)
+        
+        if generate_tweet:
+            generate_tweet(net, saver, ckpt_file)
 
-        saver.save(sess, ckpt_file)
-
+def generate_tweet(net, saver, ckpt_file):
     # Generate LEN_TEST_TEXT words using the trained network
     if generate_tweet:
         print("Generating tweet...")
