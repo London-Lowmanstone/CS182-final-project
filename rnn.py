@@ -109,45 +109,17 @@ def decode_embed(array, vocab):
     return vocab[array.index(1)]
 
 
-def main(train_model, generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
+def main(train_model, should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt"):
     """Train model/Generate tweet"""
-
-    # Load the data
-    data_ = ""
-    with open(data_file, 'r') as f:
-        data_ += f.read()
-    data_ = data_.lower()
-
-    # Convert to 1-hot coding
-    vocab = sorted(list(set(data_)))
-    data = embed_to_vocab(data_, vocab)
-
-    # Hyperparameters
-    in_size = out_size = len(vocab)
-    lstm_size = 256
-    num_layers = 2
-    batch_size = 64
-    time_steps = 100
-
-    ITERATION_COUNT = 20000  # Number of training iterations
+    ITERATION_COUNT = 1  # Number of training iterations
     LEN_TEST_TEXT = 200  # Number of words of text to generate after training the network
     SAVE_COUNT = 100 # Number of iterations before each save
 
-    # Initialize the network
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    sess = tf.InteractiveSession(config=config)
+    # Hyperparameters for training
 
-    net = ModelNetwork(in_size=in_size,
-                       lstm_size=lstm_size,
-                       num_layers=num_layers,
-                       out_size=out_size,
-                       session=sess,
-                       learning_rate=0.003,
-                       name="char_rnn_network")
 
-    sess.run(tf.global_variables_initializer())
-    saver = tf.train.Saver(tf.global_variables())
+    vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
+    in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
     # Train the network
     if train_model:
@@ -172,30 +144,79 @@ def main(train_model, generate_tweet, data_file, ckpt_file, tweet_file="tweet.tx
             cst = net.train_batch(batch, batch_y)
             if i % SAVE_COUNT == 0:
                 saver.save(sess, ckpt_file)
-        
-        if generate_tweet:
-            generate_tweet(net, saver, ckpt_file)
 
-def generate_tweet(net, saver, ckpt_file):
-    # Generate LEN_TEST_TEXT words using the trained network
-    if generate_tweet:
-        print("Generating tweet...")
-        saver.restore(sess, ckpt_file)
+        if should_generate_tweet:
+            generate_tweet_from_training(LEN_TEST_TEXT, vocab, sess, net, saver, ckpt_file, tweet_file)
 
-        TEST_PREFIX = " "
-        for i in range(len(TEST_PREFIX)):
-            out = net.run_step(embed_to_vocab(TEST_PREFIX[i], vocab), i == 0)
+def setup(data_file, ckpt_file):
+    '''
+    Takes a data file and a ckpt file and returns:
+    vocab, sess, net, saver, data, hyperparameters
+    '''
+    # Load the data
+    data_ = ""
+    with open(data_file, 'r') as f:
+        data_ += f.read()
+    data_ = data_.lower()
 
-        gen_str = TEST_PREFIX
-        word_count = 0
-        tweet = open(tweet_file, "w+")
-        while word_count < LEN_TEST_TEXT:
-            # Sample character from the network according to the generated output probabilities
-            element = np.random.choice(range(len(vocab)), p=out)
-            gen_str += vocab[element]
-            out = net.run_step(embed_to_vocab(vocab[element], vocab), False)
-            if vocab[element] == " ":
-                word_count += 1
-        tweet.write(gen_str)
-        tweet.close()
-        print("Tweet saved at {}".format(tweet_file))
+    # Convert to 1-hot coding
+    vocab = sorted(list(set(data_)))
+    data = embed_to_vocab(data_, vocab)
+
+    # Hyperparameters
+    in_size = out_size = len(vocab)
+    lstm_size = 256
+    num_layers = 2
+    batch_size = 64
+    time_steps = 100
+
+    hyperparameters = (in_size, out_size, lstm_size, num_layers, batch_size, time_steps)
+
+    # Initialize the network
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    sess = tf.InteractiveSession(config=config)
+
+    net = ModelNetwork(in_size=in_size,
+                       lstm_size=lstm_size,
+                       num_layers=num_layers,
+                       out_size=out_size,
+                       session=sess,
+                       learning_rate=0.003,
+                       name="char_rnn_network")
+
+    sess.run(tf.global_variables_initializer())
+    saver = tf.train.Saver(tf.global_variables())
+
+
+    return vocab, sess, net, saver, data, hyperparameters
+
+
+def generate_tweet(word_amount, tweet_file, data_file, ckpt_file):
+    vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
+    in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
+
+    generate_tweet_from_training(word_amount, vocab, sess, net, saver, ckpt_file, tweet_file)
+
+def generate_tweet_from_training(word_amount, vocab, sess, net, saver, ckpt_file, tweet_file):
+    # Generate word_amount words using the trained network
+    print("Generating tweet...")
+    saver.restore(sess, ckpt_file)
+
+    TEST_PREFIX = " " # I think this is where I can do "complete the sentence"-type stuff
+    for i in range(len(TEST_PREFIX)):
+        out = net.run_step(embed_to_vocab(TEST_PREFIX[i], vocab), i == 0)
+
+    gen_str = TEST_PREFIX
+    word_count = 0
+    tweet = open(tweet_file, "w+")
+    while word_count < word_amount:
+        # Sample character from the network according to the generated output probabilities
+        element = np.random.choice(range(len(vocab)), p=out)
+        gen_str += vocab[element]
+        out = net.run_step(embed_to_vocab(vocab[element], vocab), False)
+        if vocab[element] == " ":
+            word_count += 1
+    tweet.write(gen_str)
+    tweet.close()
+    print("Tweet with {} words saved at {}".format(word_amount, tweet_file))
