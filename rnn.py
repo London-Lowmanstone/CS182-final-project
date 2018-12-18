@@ -194,21 +194,20 @@ def setup(data_file, ckpt_file=None):
     return vocab, sess, net, saver, data, hyperparameters
 
 
-def generate_tweet(word_amount, tweet_file, data_file, ckpt_file):
+def generate_tweet(word_amount, tweet_file, data_file, ckpt_file, prefix=None):
     vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
     generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file)
 
-def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file):
+def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file, prefix=" "):
     # Generate word_amount words using the trained network
     print("Generating tweet...")
 
-    TEST_PREFIX = " " # I think this is where I can do "complete the sentence"-type stuff
-    for i in range(len(TEST_PREFIX)):
-        out = net.run_step(embed_to_vocab(TEST_PREFIX[i], vocab), i == 0)
+    for i in range(len(prefix)):
+        out = net.run_step(embed_to_vocab(prefix[i], vocab), i == 0)
 
-    gen_str = TEST_PREFIX
+    gen_str = prefix
     word_count = 0
     tweet = open(tweet_file, "w+")
     while word_count < word_amount:
@@ -220,4 +219,4 @@ def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_fil
             word_count += 1
     tweet.write(gen_str)
     tweet.close()
-    print("Tweet with {} words saved at {}".format(word_amount, tweet_file))
+    print("Tweet with {} words starting with '{}' saved at {}".format(word_amount, prefix, tweet_file))
