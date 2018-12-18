@@ -185,6 +185,7 @@ def setup(data_file, ckpt_file=None):
                        name="char_rnn_network")
 
     saver = tf.train.Saver(tf.global_variables())
+    # this works for restoring
     if ckpt_file:
         saver.restore(sess, ckpt_file)
     else:
