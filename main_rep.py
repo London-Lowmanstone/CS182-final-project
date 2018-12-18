@@ -1,8 +1,11 @@
+# use this to train a model on Republican tweets
+
 import rnn
 
-# def main(train_model, generate_song, data_file, ckpt_file):
+# change this to train on a different dataset
 training_name = "rep_tweets"
 
+# leave these alone
 data_folder = "data"
 models_folder = "models"
 new_tweets_folder = "tweets"
@@ -12,6 +15,3 @@ rnn.main(iterations=20000, should_generate_tweet=True, tweet_length=500,
          data_file=data_file,
          ckpt_file=ckpt_file,
          tweet_file="{}/{}.txt".format(new_tweets_folder, training_name))
-
-# Use one or the other, but not both
-# rnn.generate_tweet(5, "quick_tweet.txt", data_file, ckpt_file)

@@ -1,3 +1,6 @@
+# for use with the dataset found here:
+# https://data.world/bkey/politician-tweets
+
 import csv
 accounts_id_index = 0
 tags_index = 9
