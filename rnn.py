@@ -116,7 +116,7 @@ def main(iterations, should_generate_tweet, data_file, ckpt_file, tweet_file="tw
     # Hyperparameters for training
 
 
-    vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
+    vocab, sess, net, saver, data, hyperparameters = setup(data_file)
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
     # Train the network
@@ -144,9 +144,9 @@ def main(iterations, should_generate_tweet, data_file, ckpt_file, tweet_file="tw
     saver.save(sess, ckpt_file)
 
     if should_generate_tweet:
-        generate_tweet_from_training(tweet_length, vocab, sess, net, saver, ckpt_file, tweet_file)
+        generate_tweet_from_training(tweet_length, vocab, sess, net, saver, tweet_file)
 
-def setup(data_file, ckpt_file):
+def setup(data_file, ckpt_file=None):
     '''
     Takes a data file and a ckpt file and returns:
     vocab, sess, net, saver, data, hyperparameters
@@ -184,9 +184,11 @@ def setup(data_file, ckpt_file):
                        learning_rate=0.003,
                        name="char_rnn_network")
 
-    sess.run(tf.global_variables_initializer())
     saver = tf.train.Saver(tf.global_variables())
-
+    if ckpt_file:
+        sess.run(tf.global_variables_initializer())
+    else:
+        saver.restore(sess, ckpt_file)
 
     return vocab, sess, net, saver, data, hyperparameters
 
@@ -195,12 +197,11 @@ def generate_tweet(word_amount, tweet_file, data_file, ckpt_file):
     vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
-    generate_tweet_from_training(word_amount, vocab, sess, net, saver, ckpt_file, tweet_file)
+    generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file)
 
-def generate_tweet_from_training(word_amount, vocab, sess, net, saver, ckpt_file, tweet_file):
+def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file):
     # Generate word_amount words using the trained network
     print("Generating tweet...")
-    saver.restore(sess, ckpt_file)
 
     TEST_PREFIX = " " # I think this is where I can do "complete the sentence"-type stuff
     for i in range(len(TEST_PREFIX)):
