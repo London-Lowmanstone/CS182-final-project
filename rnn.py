@@ -186,9 +186,9 @@ def setup(data_file, ckpt_file=None):
 
     saver = tf.train.Saver(tf.global_variables())
     if ckpt_file:
-        sess.run(tf.global_variables_initializer())
-    else:
         saver.restore(sess, ckpt_file)
+    else:
+        sess.run(tf.global_variables_initializer())
 
     return vocab, sess, net, saver, data, hyperparameters
 
