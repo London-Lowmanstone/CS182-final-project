@@ -206,7 +206,7 @@ def generate_tweets_from_training(tweet_amount, vocab, sess, net, tweet_file, pr
         generate_tweet_from_training(vocab, sess, net, tweet_file, prefix)
     print("{} tweets starting with '{}' added to the file {}".format(tweet_amount, prefix, tweet_file))
 
-def generate_tweet_from_training(sess, net, tweet_file, prefix=" "):
+def generate_tweet_from_training(vocab, sess, net, tweet_file, prefix=" "):
     # Generate word_amount words using the trained network
     print("Generating tweet...")
 
