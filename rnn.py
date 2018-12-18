@@ -194,13 +194,19 @@ def setup(data_file, ckpt_file=None):
     return vocab, sess, net, saver, data, hyperparameters
 
 
-def generate_tweet(word_amount, tweet_file, data_file, ckpt_file, prefix=" "):
+def generate_tweets(tweet_amount, tweet_file, data_file, ckpt_file, prefix=" "):
     vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
-    generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file, prefix)
+    generate_tweets_from_training(tweet_amount, vocab, sess, net, tweet_file, prefix)
 
-def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file, prefix=" "):
+
+def generate_tweets_from_training(tweet_amount, vocab, sess, net, tweet_file, prefix=" "):
+    for tweet in range(tweet_amount):
+        generate_tweet_from_training(vocab, sess, net, tweet_file, prefix)
+    print("{} tweets starting with '{}' added to the file {}".format(tweet_amount, prefix, tweet_file))
+
+def generate_tweet_from_training(sess, net, tweet_file, prefix=" "):
     # Generate word_amount words using the trained network
     print("Generating tweet...")
 
@@ -208,15 +214,15 @@ def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_fil
         out = net.run_step(embed_to_vocab(prefix[i], vocab), i == 0)
 
     gen_str = prefix
-    word_count = 0
-    tweet = open(tweet_file, "w+")
-    while word_count < word_amount:
+    tweet = open(tweet_file, "a+")
+    while True:
         # Sample character from the network according to the generated output probabilities
         element = np.random.choice(range(len(vocab)), p=out)
         gen_str += vocab[element]
+        if vocab[element] == "\n":
+            break
+            
         out = net.run_step(embed_to_vocab(vocab[element], vocab), False)
-        if vocab[element] == " ":
-            word_count += 1
-    tweet.write(gen_str)
+    tweet.write(gen_str + "\n")
     tweet.close()
-    print("Tweet with {} words starting with '{}' saved at {}".format(word_amount, prefix, tweet_file))
+    

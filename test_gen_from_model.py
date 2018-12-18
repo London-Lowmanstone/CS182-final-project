@@ -16,4 +16,4 @@ ckpt_file ="{}/{}/model.ckpt".format(models_folder, training_name)
 # Use one or the other, but not both
 # rnn.generate_tweet(5, "quick_tweet.txt", data_file, ckpt_file)
 
-rnn.generate_tweet(100, "test_output.txt", data_file, ckpt_file, "as republicans, we should ")
+rnn.generate_tweets(20, "test_output.txt", data_file, ckpt_file, "if we were ")
