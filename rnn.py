@@ -194,11 +194,11 @@ def setup(data_file, ckpt_file=None):
     return vocab, sess, net, saver, data, hyperparameters
 
 
-def generate_tweet(word_amount, tweet_file, data_file, ckpt_file, prefix=None):
+def generate_tweet(word_amount, tweet_file, data_file, ckpt_file, prefix=" "):
     vocab, sess, net, saver, data, hyperparameters = setup(data_file, ckpt_file)
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
-    generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file)
+    generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file, prefix)
 
 def generate_tweet_from_training(word_amount, vocab, sess, net, saver, tweet_file, prefix=" "):
     # Generate word_amount words using the trained network
