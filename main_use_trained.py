@@ -3,10 +3,10 @@
 import rnn
 
 # change these
-training_name = "dem_tweets"
-how_many_tweets = 20
-output_file = "extra_data/dem_is.txt"
-prefix = "is"
+training_name = "rep_tweets" # which LSTM you want to use (dem_tweets for Democrat)
+how_many_tweets = 20 # how many tweets to create with the same start
+output_file = "output.txt" # where the output tweets should go
+prefix = " " # what the tweets should begin with
 
 # leave these alone
 data_folder = "data"
