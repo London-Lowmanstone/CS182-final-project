@@ -109,8 +109,8 @@ def decode_embed(array, vocab):
     return vocab[array.index(1)]
 
 
-def main(iterations, should_generate_tweet, data_file, ckpt_file, tweet_file="tweet.txt", tweet_length=500):
-    """Train model/Generate tweet"""
+def train_model(iterations, data_file, ckpt_file):
+    """Train model"""
     SAVE_COUNT = 100 # Number of iterations before each save
 
     # Hyperparameters for training
@@ -143,15 +143,11 @@ def main(iterations, should_generate_tweet, data_file, ckpt_file, tweet_file="tw
             saver.save(sess, ckpt_file)
     saver.save(sess, ckpt_file)
 
-    if should_generate_tweet:
-        generate_tweet_from_training(tweet_length, vocab, sess, net, saver, tweet_file)
-
 def setup(data_file, ckpt_file=None):
     '''
     Takes a data file and a ckpt file and returns:
     vocab, sess, net, saver, data, hyperparameters
     '''
-    # TODO figure out how to restore from ckpt file
     # Load the data
     data_ = ""
     with open(data_file, 'r') as f:
@@ -199,7 +195,6 @@ def generate_tweets(tweet_amount, tweet_file, data_file, ckpt_file, prefix=" "):
     in_size, out_size, lstm_size, num_layers, batch_size, time_steps = hyperparameters
 
     generate_tweets_from_training(tweet_amount, vocab, sess, net, tweet_file, prefix)
-
 
 def generate_tweets_from_training(tweet_amount, vocab, sess, net, tweet_file, prefix=" "):
     for tweet in range(tweet_amount):
