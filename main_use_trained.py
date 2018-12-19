@@ -5,8 +5,8 @@ import rnn
 # change these
 training_name = "dem_tweets"
 how_many_tweets = 20
-output_file = "test_output.txt"
-prefix = " "
+output_file = "extra_data/dem_is.txt"
+prefix = "is"
 
 # leave these alone
 data_folder = "data"
